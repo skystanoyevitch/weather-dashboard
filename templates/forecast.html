@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>5-Day Forecast for {{ city }}</h1>
+{% for forecast in forecasts %}
+<div class="forecast-day">
+    <p>Date: {{ forecast.date }}</p>
+    <p>Temp: {{ forecast.temp }}°C</p>
+    <p>{{ forecast.description }}</p>
+</div>
+{% endfor %}
+{% endblock %}

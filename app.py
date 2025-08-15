@@ -36,12 +36,19 @@ def get_forecast(city):
     response = requests.get(forecast_url)
     weather_data = response.json()
 
-    print(weather_data['list'])
+    # print(weather_data['list'])
 
-    temp = weather_data['main']['temp']
-    description = weather_data['weather'][0]['description']
+    forecasts = []
 
-    return render_template('weather.html', city=city, temperature=temp, description=description)
+    for i in range(0, min(40, len(weather_data['list'])), 8):
+        forecast = weather_data['list'][0]
+        forecasts.append({
+            'temp': forecast['main']['temp'],
+            'description': forecast['weather'][0]['description'],
+            'date': forecast['dt_txt']
+        })
+
+    return render_template('forecast.html', city=city, forecasts=forecasts)
 
 if __name__ == '__main__':
     app.run(debug=True, port=3000)
