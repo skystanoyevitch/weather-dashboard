@@ -1,36 +1,32 @@
+import os
+import requests
 from flask import Flask
+from dotenv import load_dotenv
+
+load_dotenv()
+
 app = Flask(__name__)
+
+
 
 @app.route('/')
 def home():
     return "Weather Dashboard coming soon!"
 
-app.run(debug=True, port=3000)
+
+@app.route('/weather/<city>')
+def get_weather(city):
+    api_key = os.getenv("OPENWEATHER_API_KEY")
+    url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric"
+
+    response = requests.get(url)
+    weather_data = response.json()
 
 
+    temp = weather_data['main']['temp']
+    description = weather_data['weather'][0]['description']
 
+    return f"Weather in {city}: {temp} Degrees, {description}"
 
-
-
-
-# from http.server import HTTPServer, BaseHTTPRequestHandler, SimpleHTTPRequestHandler
-
-# class setupWebServer(BaseHTTPRequestHandler):
-#     def do_GET(self):
-#         self.send_response(200)
-#         self.send_header('Content-type', 'text/html')
-#         self.end_headers()
-#         self.wfile.write('Hello Server World')
-
-
-# if __name__ == "__main__":
-#     hostName = "localhost"
-#     serverPort = 8081
-#     webServer = HTTPServer((hostName, serverPort), SimpleHTTPRequestHandler)
-#     print(f"Server started http://{hostName}:{serverPort}")
-#     try:
-#         webServer.serve_forever()
-#     except KeyboardInterrupt:
-#         pass
-#     webServer.server_close()
-#     print("Server Stopped")
+if __name__ == '__name__':
+    app.run(debug=True, port=3000)
