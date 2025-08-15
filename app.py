@@ -1,6 +1,6 @@
 import os
 import requests
-from flask import Flask
+from flask import Flask, render_template
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -28,5 +28,5 @@ def get_weather(city):
 
     return f"Weather in {city}: {temp} Degrees, {description}"
 
-if __name__ == '__name__':
+if __name__ == '__main__':
     app.run(debug=True, port=3000)
