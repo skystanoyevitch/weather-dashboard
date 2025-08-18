@@ -1,12 +1,11 @@
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+.navigation {
+  background: #333;
+  padding: 10px;
+  margin-bottom: 20px;
 }
 
-.weather-info {
-  background: #f0f8ff;
-  padding: 20px;
-  border-radius: 8px;
-  margin-top: 20px;
+.navigation a {
+  color: white;
+  text-decoration: none;
+  margin-right: 20px;
 }
