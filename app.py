@@ -38,14 +38,31 @@ def get_weather_search():
         return_to_homepage = render_template('homepage.html', error="Please enter a city name.", city=city)
         return return_to_homepage
 
+
+
+
+
+
+
+
+
     api_key = os.getenv("OPENWEATHER_API_KEY")
     url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric"
 
-    response = requests.get(url)
-    weather_data = response.json()
 
-    temp = weather_data['main']['temp']
-    description = weather_data['weather'][0]['description']
+    try:
+        response = requests.get(url, timeout=10)
+        if response.status_code != 200:
+                msg = response.json().get('message', 'Unable to fetch weather for that city.')
+                return render_template('homepage.html', error=msg.capitalize(), city=city)
+        weather_data = response.json()
+        temp = weather_data['main']['temp']
+        description = weather_data['weather'][0]['description']
+
+    except requests.exceptions.RequestException:
+        return render_template('homepage.html', error='Network error. Please try again', city=city)
+    except (KeyError, IndexError, TypeError, ValueError):
+        return render_template('homepage.html', error='Unexpected response. Try another city.', city=city)
 
     return render_template('weather.html', city=city, temperature=temp, description=description)
 
