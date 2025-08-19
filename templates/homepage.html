@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<h1>Search Weather</h1>
+<div class="weather-info">
+    {% if error %} <p class="error">{{error}}</p> {% endif%}
+    <form action="{{url_for('get_weather_search')}}" method="GET">
+        <input type="text" name="city" placeholder="Enter City Name" value="{{city or ''}}">
+        <button type="submit">Submit</button>
+    </form>
+</div>
+{% endblock %}
